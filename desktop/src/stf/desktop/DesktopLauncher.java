@@ -2,11 +2,15 @@ package stf.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import stf.CatanGDX;
+
+import stf.main.CatanGDX;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.title = "Drop";
+		config.width = 800; //@TODO Changing this changes spacing, fix pls lol READ ABOUT VIEWPORTS
+		config.height = 480;
 		new LwjglApplication(new CatanGDX(), config);
 	}
 }
