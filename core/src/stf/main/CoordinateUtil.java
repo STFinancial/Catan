@@ -1,5 +1,5 @@
 package stf.main;
-
+//needs overhaul, note added from laptop to check, project builds on laptop
 import com.badlogic.gdx.math.Vector3;
 
 public class CoordinateUtil {
