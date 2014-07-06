@@ -1,0 +1,5 @@
+package stf.gamePieces;
+
+public enum MoveSubType {
+	CARD, CITY, ROAD, SETTLEMENT, KNIGHT, MONOPOLY, ROADBUILDER, YEAROFPLENTY, PLAYERS, PORT;
+}

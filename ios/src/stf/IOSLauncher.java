@@ -5,8 +5,7 @@ import org.robovm.apple.uikit.UIApplication;
 
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
-
-import stf.main.CatanGDX;
+import stf.CatanGDX;
 
 public class IOSLauncher extends IOSApplication.Delegate {
     @Override

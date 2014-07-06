@@ -3,8 +3,7 @@ package stf.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-
-import stf.main.CatanGDX;
+import stf.CatanGDX;
 
 public class HtmlLauncher extends GwtApplication {
 

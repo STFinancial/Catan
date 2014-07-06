@@ -5,11 +5,11 @@ import com.badlogic.gdx.graphics.Texture;
 public class City extends Building {
 
 	public City(PlayerColor color) {
-		this.color = color;
+		this.ownerColor = color;
 	}
 	
 	public PlayerColor getColor() {
-		return color;
+		return ownerColor;
 	}
 	
 	public Intersection getPosition() {
