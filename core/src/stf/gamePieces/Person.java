@@ -3,12 +3,12 @@ package stf.gamePieces;
 import java.util.ArrayList;
 
 public abstract class Person {
-	private ArrayList<City> cities;
-	private PlayerColor color;
-	private ArrayList<DevelopmentCard> developmentHand;
-	private ArrayList<ResourceCard> resourceHand;
-	private ArrayList<Road> roads;
-	private ArrayList<Settlement> settlements;
+	protected ArrayList<City> cities;
+	protected PlayerColor color;
+	protected ArrayList<DevelopmentCard> developmentHand;
+	protected ArrayList<ResourceCard> resourceHand;
+	protected ArrayList<Road> roads;
+	protected ArrayList<Settlement> settlements;
 		
 	
 	public ArrayList<City> getCities() {
