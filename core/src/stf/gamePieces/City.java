@@ -1,5 +1,7 @@
 package stf.gamePieces;
 
+import com.badlogic.gdx.graphics.Texture;
+
 public class City extends Building {
 
 	public City(PlayerColor color) {
@@ -24,6 +26,12 @@ public class City extends Building {
 	
 	public void setPosition(Intersection intersection) {
 		position = intersection;
+	}
+
+	@Override
+	public Texture getImg() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

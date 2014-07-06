@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import stf.main.CoordinateUtil;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector3;
 
@@ -17,6 +18,7 @@ public class Tile {
 	int y;
 	Vector3 coords;
 	Sprite sprite;
+	Sprite pipSprite;
 
 	public Tile(TileType type, int pip) {
 		this.type = type;
@@ -45,10 +47,22 @@ public class Tile {
 		coords = new Vector3(x,y,0);
 		sprite = new Sprite(type.getImage());
 		sprite.setBounds(CoordinateUtil.tileToGame(coords).x, CoordinateUtil.tileToGame(coords).y,256,256);
+		if(type != TileType.DESERT){
+			pipSprite = new Sprite(new Texture("pip"+pip+".gif"));
+			pipSprite.setBounds(CoordinateUtil.tileToGame(coords).x+128-32, CoordinateUtil.tileToGame(coords).y+128-32,64,64);
+		}
 	}
 	
 	public Sprite getSprite(){
 		return sprite;
+	}
+	
+	public String toString(){
+		return "" + x + " , " + y + " type: " + type + " number: " + pip;
+	}
+
+	public Sprite getPipSprite() {
+		return pipSprite;
 	}
 	
 }

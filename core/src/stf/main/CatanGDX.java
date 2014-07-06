@@ -1,7 +1,9 @@
 package stf.main;
 
 import stf.gamePieces.Board;
+import stf.gamePieces.Intersection;
 import stf.gamePieces.Tile;
+import stf.gamePieces.TileType;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -11,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 public class CatanGDX extends com.badlogic.gdx.Game {
 	SpriteBatch batch;
@@ -34,6 +37,11 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 		for(Tile t : board.getTiles()){
 			t.updateSprite();
 		}
+		for(Intersection i : board.getIntersections()){
+			i.updateSprite();
+		}
+		CoordinateUtil.setupGametoTile(board.getTiles());
+		CoordinateUtil.setupGametoInt(board.getIntersections());
 	}
 
 	@Override
@@ -49,6 +57,12 @@ public class CatanGDX extends com.badlogic.gdx.Game {
         batch.setProjectionMatrix(camera.combined); 
 		for(Tile t : board.getTiles()){
 			t.getSprite().draw(batch);
+			if(t.getType() != TileType.DESERT){
+				t.getPipSprite().draw(batch);
+			}
+		}
+		for(Intersection i : board.getIntersections()){
+			i.getSprite().draw(batch);
 		}
 		
 		batch.end();
@@ -83,7 +97,17 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 				camera.zoom += .1f;
 			if(x < 15 && y > Gdx.graphics.getHeight() - 15)
 				camera.zoom -= .1f;
-			
+			Vector3 gameCoords = camera.unproject(new Vector3(x,y,0));
+			Object clickedObject = CoordinateUtil.getClickObject(gameCoords, board);
+			if(clickedObject != null){
+				if(clickedObject instanceof Tile){
+					System.out.println("tapped Tile: " + clickedObject);
+				}
+				if(clickedObject instanceof Intersection){
+					Intersection i = (Intersection) clickedObject;
+					i.printInfo();
+				}
+			}
 			return false;
 		}
 
@@ -102,7 +126,15 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 		@Override
 		public boolean pan(float x, float y, float deltaX, float deltaY) {
 			camera.translate(-1*deltaX, deltaY, 0);
-			System.out.println(camera.origin);
+			if(camera.position.x > 1250)
+				camera.position.x = 1250;
+			if(camera.position.x < -50)
+				camera.position.x = -50;
+			if(camera.position.y > 1000)
+				camera.position.y = 1000;
+			if(camera.position.y < 0)
+				camera.position.y = 0;
+			
 			return false;
 		}
 
@@ -127,5 +159,10 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 		}
 
 	
+	}
+
+
+	public Board getBoard() {
+		return board;
 	}
 }

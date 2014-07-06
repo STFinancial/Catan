@@ -2,12 +2,22 @@ package stf.gamePieces;
 
 import java.util.ArrayList;
 
+import stf.main.CoordinateUtil;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector3;
+
 public class Intersection {
 	ArrayList<Intersection> adjacentIntersections;
 	ArrayList<Tile> adjacentTiles;
 	ArrayList<Path> exitingPaths;
 	int ID;
+	int x, y;
 	PortType port;
+	Vector3 coords;
+	Sprite sprite;
+	Building building = null;
 	
 	Intersection(int ID) {
 		this.ID = ID;
@@ -56,4 +66,23 @@ public class Intersection {
 			System.out.println(exitingPaths.get(i).getID());
 		}
 	}
+	
+	
+	 //To only be called on creation 
+		public void updateSprite(){
+			coords = new Vector3(x,y,0);
+			if(building == null){
+				sprite = new Sprite(new Texture("emptyIntersection.gif"));
+			}else{
+				sprite = new Sprite(building.getImg());
+			}
+			if(Math.random()<.05){
+				sprite = new Sprite(new Texture("redSettlement.gif")); //testing for sprite
+			}
+			sprite.setBounds(CoordinateUtil.intToGame(ID).x, CoordinateUtil.intToGame(ID).y,64,64);
+		}
+		
+		public Sprite getSprite(){
+			return sprite;
+		}
 }
