@@ -5,48 +5,69 @@ import stf.gamePieces.Tile;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 
-public class CatanGDX extends ApplicationAdapter {
+public class CatanGDX extends com.badlogic.gdx.Game {
 	SpriteBatch batch;
-	Texture img, desertImg, hillsImg, mountainsImg, plainsImg, forestImg, pastureImg;
 	Board board;
-	Camera camera;
 	BitmapFont font;
-	@Override
+	private OrthographicCameraWithVirtualViewport camera;  
+    private MultipleVirtualViewportBuilder multipleVirtualViewportBuilder;  
+	
+    @Override
 	public void create () {
+		
+	    multipleVirtualViewportBuilder = new MultipleVirtualViewportBuilder(800, 480, 854, 600);  
+        VirtualViewport virtualViewport = multipleVirtualViewportBuilder.getVirtualViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());  
+          
+        camera = new OrthographicCameraWithVirtualViewport(virtualViewport);  
+        camera.position.set(0f, 0f, 0f);  
 		batch = new SpriteBatch();
-		camera = new OrthographicCamera(800,480);
 		board = new Board();
 		font =new BitmapFont();
 		Gdx.input.setInputProcessor(new GestureDetector(new MyGestureListener()));
+		for(Tile t : board.getTiles()){
+			t.updateSprite();
+		}
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		super.render();
+		Gdx.gl.glClearColor(.2f, .3f, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		if(Gdx.input.getInputProcessor().scrolled(1)){
 			System.out.println("got here");
 		}
-		camera.update();
+		camera.update();   
 		batch.begin();
+        batch.setProjectionMatrix(camera.combined); 
 		for(Tile t : board.getTiles()){
-			batch.draw(t.getType().getImage(), camera.project(t.getGameCoords()).x, camera.project(t.getGameCoords()).y);
-			font.draw(batch, "" + t.getNumber(), camera.project(t.getGameCoords()).x + 120, camera.project(t.getGameCoords()).y + 128);
-			//font.draw(batch, "x: " + t.getX() + " y: " + t.getY(), t.getGameCoords().x + 120, t.getGameCoords().y + 118);
+			t.getSprite().draw(batch);
 		}
 		
 		batch.end();
 	}
+	
+	 @Override  
+	    public void resize(int width, int height) {  
+	        super.resize(width, height);  
+	          
+	        VirtualViewport virtualViewport = multipleVirtualViewportBuilder.getVirtualViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());  
+	        camera.setVirtualViewport(virtualViewport);  
+	          
+	        camera.updateViewport();  
+	        // centers the camera at 0, 0 (the center of the virtual viewport)  
+	        camera.position.set(0f, 0f, 0f);  
+	          
+	       }  
+	
+	
 	public class MyGestureListener implements GestureListener{
 		
 		@Override
@@ -57,7 +78,12 @@ public class CatanGDX extends ApplicationAdapter {
 
 		@Override
 		public boolean tap(float x, float y, int count, int button) {
-			// TODO Auto-generated method stub
+			System.out.println(x + " , " + y);
+			if(x < 15 && y < 15)
+				camera.zoom += .1f;
+			if(x < 15 && y > Gdx.graphics.getHeight() - 15)
+				camera.zoom -= .1f;
+			
 			return false;
 		}
 
@@ -76,6 +102,7 @@ public class CatanGDX extends ApplicationAdapter {
 		@Override
 		public boolean pan(float x, float y, float deltaX, float deltaY) {
 			camera.translate(-1*deltaX, deltaY, 0);
+			System.out.println(camera.origin);
 			return false;
 		}
 

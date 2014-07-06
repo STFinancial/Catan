@@ -1,15 +1,15 @@
 package stf.main;
-//needs overhaul, note added from laptop to check, project builds on laptop
 import com.badlogic.gdx.math.Vector3;
 
 public class CoordinateUtil {
-
+	static final int TILESIZE = 256;
+	
 	public static Vector3 tileToGame(Vector3 tileCoord){
 		Vector3 toReturn = new Vector3();
 		float x = 0;
 		float y = 0;
-		x = Math.abs(2 - tileCoord.y) * 128 + 256 * tileCoord.x;
-		y = (128+64) * (4-tileCoord.y);
+		x = Math.abs(2 - tileCoord.y) * TILESIZE/2 + TILESIZE * tileCoord.x;
+		y = (3*TILESIZE/4) * (4-tileCoord.y);
 		toReturn.x = x;
 		toReturn.y = y;
 		return toReturn;

@@ -437,7 +437,6 @@ public class BoardUtility {
 			} else {
 				System.out.println("It shouldn't get here: Board Constructor Loop 2");
 			}
-			tile.coords = new Vector3(tile.x,tile.y,0);
 		}
 		board.tiles = tiles;
 

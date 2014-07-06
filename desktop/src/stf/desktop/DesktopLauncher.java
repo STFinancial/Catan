@@ -9,7 +9,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Drop";
-		config.width = 800; //@TODO Changing this changes spacing, fix pls lol READ ABOUT VIEWPORTS
+		config.width = 800; 
 		config.height = 480;
 		new LwjglApplication(new CatanGDX(), config);
 	}

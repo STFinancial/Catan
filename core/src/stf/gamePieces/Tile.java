@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import stf.main.CoordinateUtil;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector3;
 
 public class Tile {
@@ -15,6 +16,7 @@ public class Tile {
 	int x;
 	int y;
 	Vector3 coords;
+	Sprite sprite;
 
 	public Tile(TileType type, int pip) {
 		this.type = type;
@@ -38,10 +40,15 @@ public class Tile {
 	public int getY() {
 		return y;
 	}
-	
-	public Vector3 getGameCoords(){
-		return CoordinateUtil.tileToGame(coords);
+	 //To only be called on creation 
+	public void updateSprite(){
+		coords = new Vector3(x,y,0);
+		sprite = new Sprite(type.getImage());
+		sprite.setBounds(CoordinateUtil.tileToGame(coords).x, CoordinateUtil.tileToGame(coords).y,256,256);
 	}
 	
+	public Sprite getSprite(){
+		return sprite;
+	}
 	
 }
