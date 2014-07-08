@@ -2,22 +2,20 @@ package stf.gamePieces;
 
 import java.util.ArrayList;
 
-public class Player extends Person {
+public class AI extends Person {
 
-	
-	public Player(PlayerColor color) {
+	public AI(PlayerColor color) {
 		super(color);
 	}
 	
-	
-	
-	//does this really need to be in this class
 	@Override
 	public Move getMove() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	/* Methods to get potential buying moves */
+	/* These might be moved to Person if we feel */
+	
 
-	
-	
 }

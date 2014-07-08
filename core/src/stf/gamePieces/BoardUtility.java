@@ -373,7 +373,7 @@ public class BoardUtility {
 	
 	private static void initializeTiles(Board board) {
 		Integer[] numbers = {2,3,3,4,4,5,5,6,6,8,8,9,9,10,10,11,11,12};
-		numbers = arrayShuffle(numbers);
+		numbers = BoardUtility.arrayShuffle(numbers);
 		Tile[] tiles = new Tile[19];
 		
 		
@@ -414,7 +414,7 @@ public class BoardUtility {
 		}
 				
 		//shuffle the tiles so we can randomly assign them coordinates
-		tiles = arrayShuffle(tiles);
+		tiles = BoardUtility.arrayShuffle(tiles);
 		
 		//assign coordinates
 		for (int i = 0; i < 19; i++){
@@ -451,7 +451,7 @@ public class BoardUtility {
 		ports[7] = PortType.WOOD;
 		ports[8] = PortType.WHEAT;
 		
-		ports = arrayShuffle(ports);
+		ports = BoardUtility.arrayShuffle(ports);
 		
 		//ports are on 0:1 , 3:4, 7:17, 14:15, 26:37, 28:38, 45:46, 47:48, 50:51
 		//arranged clockwise 0:1, 3:4, 14:15, 26:37, 45:46, 50:51, 47:48, 28:38, 7:17

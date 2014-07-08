@@ -6,10 +6,6 @@ import java.util.Stack;
 public class DevelopmentDeck {
 	private Stack<DevelopmentCard> deck;
 	
-	public boolean isEmpty() {
-		return deck.isEmpty();
-	}
-	
 	public DevelopmentCard dealCard() {
 		if (deck.isEmpty()) {
 			return null;
@@ -17,6 +13,11 @@ public class DevelopmentDeck {
 			return deck.pop();
 		}
 	}
+	
+	public boolean isEmpty() {
+		return deck.isEmpty();
+	}
+	
 	
 	public DevelopmentDeck() {
 		deck = new Stack<DevelopmentCard>();

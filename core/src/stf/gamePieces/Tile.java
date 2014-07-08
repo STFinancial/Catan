@@ -27,6 +27,10 @@ public class Tile {
 		paths = new ArrayList<Path>(6);
 	}
 	
+	public boolean equals(Tile tile) {
+		return (tile.x == x && tile.y == y);
+	}
+	
 	public int getNumber() {
 		return pip;
 	}
