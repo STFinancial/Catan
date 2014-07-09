@@ -3,6 +3,7 @@ package stf.gamePieces;
 import java.util.ArrayList;
 
 public class Path {
+	Road road;
 	ArrayList<Path> adjacentPaths;
 	int ID;
 	ArrayList<Intersection> spanningIntersections;
@@ -12,6 +13,11 @@ public class Path {
 		this.ID = ID;
 		adjacentPaths = new ArrayList<Path>(4);
 		spanningIntersections = new ArrayList<Intersection>(2);
+	}
+	
+	public void build(Road road) {
+		this.road = road;
+		road.setPosition(this);
 	}
 	
 	public int getID() {

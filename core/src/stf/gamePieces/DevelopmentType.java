@@ -7,19 +7,21 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public enum DevelopmentType {
-	PALACE ("images/palace.png"), 
-	UNIVERSITY ("images/university.png"), 
-	MARKET ("images/market.png"), 
-	CHAPEL ("images/chapel.png"), 
-	LIBRARY ("images/library.png"), 
-	MONOPOLY ("images/monopoly.png"), 
-	YEAROFPLENTY ("images/YOP.png"), 
-	ROADBUILDING ("images/RB.png"), 
-	KNIGHT ("images/knight.png");
+	PALACE ("images/palace.png", true), 
+	UNIVERSITY ("images/university.png", true), 
+	MARKET ("images/market.png", true), 
+	CHAPEL ("images/chapel.png", true), 
+	LIBRARY ("images/library.png", true), 
+	MONOPOLY ("images/monopoly.png", false), 
+	YEAROFPLENTY ("images/YOP.png", false), 
+	ROADBUILDING ("images/RB.png", false), 
+	KNIGHT ("images/knight.png", false);
 	
 	BufferedImage image;
+	boolean isVictoryPoint;
 	
-	private DevelopmentType(String filePath) {
+	private DevelopmentType(String filePath, boolean isVictoryPoint) {
+		this.isVictoryPoint = isVictoryPoint;
 		File file = new File(filePath);
 		try {
 			image = ImageIO.read(file);

@@ -26,8 +26,17 @@ public class Intersection {
 		exitingPaths = new ArrayList<Path>(3);
 	}
 	
+	public void build(Building building) {
+		this.building = building;
+		building.setPosition(this);
+	}
+	
 	public ArrayList<Tile> getAdjacentTiles() {
 		return adjacentTiles;
+	}
+	
+	public Building getBuilding() {
+		return building;
 	}
 	
 	public ArrayList<Path> getExitingPaths() {

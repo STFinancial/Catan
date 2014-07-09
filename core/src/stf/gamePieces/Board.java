@@ -13,12 +13,25 @@ public class Board {
 		BoardUtility.initializeBoard(this);
 	}
 	
+	public Intersection getIntersection(int index) {
+		return intersections[index];
+	}
+	
 	public Intersection[] getIntersections() {
 		return intersections;
 	}
 	
+	public Path getPath(int index) {
+		//should we do index checking?
+		return paths[index];
+	}
+	
 	public Path[] getPaths() {
 		return paths;
+	}
+	
+	public Tile getTile(int index) {
+		return tiles[index];
 	}
 
 	public Tile[] getTiles() {

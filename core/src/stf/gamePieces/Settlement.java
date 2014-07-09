@@ -12,10 +12,6 @@ public class Settlement extends Building {
 		return ownerColor;
 	}
 	
-	public Intersection getPosition() {
-		return position;
-	}
-	
 	//it is convenient that the resource multiplier
 	//is equal to the points that it is worth
 	

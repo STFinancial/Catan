@@ -3,16 +3,21 @@ package stf.gamePieces;
 import java.awt.image.BufferedImage;
 
 public enum PortType {
-	RANDOM,
-	WOOD,
-	WHEAT,
-	SHEEP,
-	BRICK,
-	ORE;
+	RANDOM(null),
+	LOGS(ResourceType.LOGS),
+	WHEAT(ResourceType.WHEAT),
+	SHEEP(ResourceType.SHEEP),
+	BRICK(ResourceType.BRICK),
+	ORE(ResourceType.ORE);
 	
 	//toString() already outputs the proper text
 	
+	ResourceType resourceEquiv;
 	BufferedImage image = null;
+	
+	private PortType(ResourceType type) {
+		resourceEquiv = type;
+	}
 	
 //	private PortType(String filename){
 //		

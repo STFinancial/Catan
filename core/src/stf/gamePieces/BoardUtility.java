@@ -448,7 +448,7 @@ public class BoardUtility {
 		ports[4] = PortType.BRICK;
 		ports[5] = PortType.ORE;
 		ports[6] = PortType.SHEEP;
-		ports[7] = PortType.WOOD;
+		ports[7] = PortType.LOGS;
 		ports[8] = PortType.WHEAT;
 		
 		ports = BoardUtility.arrayShuffle(ports);
