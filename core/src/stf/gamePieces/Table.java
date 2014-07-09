@@ -19,6 +19,31 @@ public class Table {
 	private ResourceDeck sheepDeck;
 	private ResourceDeck wheatDeck;
 	
+	/* Eventually we might want to allow players to pick their color */
+	public Table(int numPlayers, int numAI) {
+		board = new Board();
+		dice = new Dice();
+		developmentDeck = new DevelopmentDeck();
+		currentPlayerIndex = 0;
+		brickDeck = new ResourceDeck(ResourceType.BRICK);
+		logsDeck = new ResourceDeck(ResourceType.LOGS);
+		oreDeck = new ResourceDeck(ResourceType.ORE);
+		sheepDeck = new ResourceDeck(ResourceType.SHEEP);
+		wheatDeck = new ResourceDeck(ResourceType.WHEAT);
+		
+		players = new ArrayList<Person>(numPlayers + numAI);
+		for (int i = 0; i < numPlayers + numAI; ++i) {
+			if (i < numPlayers) {
+				players.add(new Player(PlayerColor.getColor(i)));
+			} else {
+				players.add(new AI(PlayerColor.getColor(i)));
+			}
+		}
+	}
+	
+	public Person getCurrentPlayer() {
+		return players.get(currentPlayerIndex);
+	}
 	
 	/* Consider visibility in this (should it be public?) */
 	/* Should this be in the board class? (lots of imports going on here) */
@@ -172,7 +197,7 @@ public class Table {
 			switch (portType) {
 			case RANDOM:
 				deck = getDeck(move.getReceivingType());
-				player.removeResourceCards(type, quantity)
+			//	player.removeResourceCards(type, quantity)
 			}
 		} else {
 			

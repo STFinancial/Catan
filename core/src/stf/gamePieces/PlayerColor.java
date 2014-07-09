@@ -13,4 +13,15 @@ public enum PlayerColor {
 	private PlayerColor(Color color) {
 		this.color = color;
 	}
+	
+	static PlayerColor getColor(int index) {
+		switch(index) {
+		case 0: return BLUE;
+		case 1: return ORANGE;
+		case 2: return RED;
+		case 3: return WHITE;
+		default: System.out.println("It shouldn't get here, PlayerColor getColor");
+		return null;
+		}
+	}
 }
