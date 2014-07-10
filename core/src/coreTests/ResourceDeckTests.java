@@ -21,12 +21,14 @@ public class ResourceDeckTests {
 	
 	@Test
 	public void testCorrectType() {
+		deck = new ResourceDeck(ResourceType.BRICK);
 		Assert.assertTrue(deck.getType() == ResourceType.BRICK);
 	}
 	
 	@Test
 	public void testCardType() {
 		ResourceCard card;
+		deck = new ResourceDeck(ResourceType.BRICK);
 		card = deck.dealCard();
 		Assert.assertTrue(card.getType() == ResourceType.BRICK);
 		deck.returnCard(card);
@@ -34,6 +36,7 @@ public class ResourceDeckTests {
 	
 	@Test
 	public void testCorrectNumCards() {
+		deck = new ResourceDeck(ResourceType.BRICK);
 		for (int i = 0; i < 19; ++i) {
 			deck.dealCard();
 		}

@@ -79,11 +79,13 @@ public abstract class Person {
 	}
 	
 	Settlement getNextPlayableSettlement() {
-		if (numPlayedSettlements < 5) {
-			return settlements.get(numPlayedSettlements++);
-		} else {
-			return null;
+		for (int i = 0; i < 5; ++i) {
+			if (settlements.get(i).getPosition() == null) {
+				return settlements.get(i);
+			}
 		}
+		numPlayedSettlements++;
+		return null;
 	}
 	
 	
