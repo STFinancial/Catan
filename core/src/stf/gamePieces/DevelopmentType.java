@@ -1,27 +1,33 @@
 package stf.gamePieces;
 
-import com.badlogic.gdx.graphics.Texture;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public enum DevelopmentType {
-	PALACE ("palace.gif", true), 
-	UNIVERSITY ("university.gif", true), 
-	MARKET ("market.gif", true), 
-	CHAPEL ("chapel.gif", true), 
-	LIBRARY ("library.gif", true), 
-	MONOPOLY ("monopoly.gif", false), 
-	YEAROFPLENTY ("YOP.gif", false), 
-	ROADBUILDING ("RB.gif", false), 
-	KNIGHT ("knight.gif", false);
+	PALACE ("images/palace.png", true), 
+	UNIVERSITY ("images/university.png", true), 
+	MARKET ("images/market.png", true), 
+	CHAPEL ("images/chapel.png", true), 
+	LIBRARY ("images/library.png", true), 
+	MONOPOLY ("images/monopoly.png", false), 
+	YEAROFPLENTY ("images/YOP.png", false), 
+	ROADBUILDING ("images/RB.png", false), 
+	KNIGHT ("images/knight.png", false);
 	
-	Texture image;
+	BufferedImage image;
 	boolean isVictoryPoint;
 	
 	private DevelopmentType(String filePath, boolean isVictoryPoint) {
 		this.isVictoryPoint = isVictoryPoint;
-		image = new Texture(filePath);
-	}
-	
-	public Texture getImage(){
-		return image;
+		File file = new File(filePath);
+		try {
+			image = ImageIO.read(file);
+		} catch (IOException e) {
+			System.out.println("Could not find specified file. Development Type: " + filePath);
+			e.printStackTrace();
+		}
 	}
 }
