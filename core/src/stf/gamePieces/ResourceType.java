@@ -1,29 +1,22 @@
 package stf.gamePieces;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import com.badlogic.gdx.graphics.Texture;
 
 public enum ResourceType {
-	BRICK ("images/brick.png"), 
-	LOGS ("images/logs.png"),
-	ORE ("images/ore.png"), 
-	SHEEP ("images/sheep.png"), 
-	WHEAT ("images/wheat.png");
+	BRICK ("brick.gif"), 
+	LOGS ("logs.gif"),
+	ORE ("ore.gif"), 
+	SHEEP ("sheep.gif"), 
+	WHEAT ("wheat.gif");
 	
 	
-	BufferedImage image;
+	Texture image;
 	
-	private ResourceType(String filePath) {
-		File file = new File(filePath);
-		
-		try {
-			image = ImageIO.read(file);
-		} catch (IOException e) {
-			System.out.println("Could not find specified file. Resource Type: " + filePath);
-			e.printStackTrace();
-		}
+	private ResourceType(String filePath) {	
+		image = new Texture(filePath);
+	}
+	
+	public Texture getImage(){
+		return image;
 	}
 }
