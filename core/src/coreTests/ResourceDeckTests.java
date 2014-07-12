@@ -15,6 +15,7 @@ public class ResourceDeckTests {
 	
 	@Test
 	public void testConstructor() {
+		
 		deck = new ResourceDeck(ResourceType.BRICK);
 		Assert.assertNotNull(deck);
 	}
