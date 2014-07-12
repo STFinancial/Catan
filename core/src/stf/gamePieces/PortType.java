@@ -1,6 +1,6 @@
 package stf.gamePieces;
 
-import java.awt.image.BufferedImage;
+import com.badlogic.gdx.graphics.Texture;
 
 public enum PortType {
 	RANDOM(null),
@@ -13,12 +13,20 @@ public enum PortType {
 	//toString() already outputs the proper text
 	
 	ResourceType resourceEquiv;
-	BufferedImage image = null;
+	Texture image = null;
 	
 	private PortType(ResourceType type) {
 		resourceEquiv = type;
+		if(type != null){
+			image = type.getImage();
+		}else{
+			image = new Texture("randomPort.gif");
+		}
 	}
 	
+	public Texture getImage(){
+		return image;
+	}
 //	private PortType(String filename){
 //		
 //	}

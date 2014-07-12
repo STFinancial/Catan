@@ -493,6 +493,11 @@ public class BoardUtility {
 		board.intersections[17].port = ports[8];
 		
 		//that should be the extent of port placing that needs to be done
+		//HA, Maybe for your MERE BACKEND!, the world of graphics requires much more from you.
+		board.ports = new Port[9];
+		for(int i = 0; i<9; i++){
+			board.ports[i] = new Port(ports[i], i);
+		}
 	}
 	
 	

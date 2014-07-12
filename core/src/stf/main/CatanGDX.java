@@ -2,6 +2,7 @@ package stf.main;
 
 import stf.gamePieces.Board;
 import stf.gamePieces.Intersection;
+import stf.gamePieces.Port;
 import stf.gamePieces.Tile;
 import stf.gamePieces.TileType;
 
@@ -42,6 +43,7 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 		}
 		CoordinateUtil.setupGametoTile(board.getTiles());
 		CoordinateUtil.setupGametoInt(board.getIntersections());
+		CoordinateUtil.setupGametoPort(board.getPorts());
 	}
 
 	@Override
@@ -64,7 +66,11 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 		for(Intersection i : board.getIntersections()){
 			i.getSprite().draw(batch);
 		}
-		
+
+		for(Port p : board.getPorts()){
+			p.getSprite().draw(batch);
+			p.getTypeSprite().draw(batch);
+		}
 		batch.end();
 	}
 	
@@ -106,6 +112,9 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 				if(clickedObject instanceof Intersection){
 					Intersection i = (Intersection) clickedObject;
 					i.printInfo();
+				}
+				if(clickedObject instanceof Port){
+					System.out.println("tapped Port: " + clickedObject);
 				}
 			}
 			return false;

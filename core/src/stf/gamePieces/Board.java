@@ -7,6 +7,7 @@ public class Board {
 	Intersection[] intersections;
 	Path[] paths;
 	Tile[] tiles;
+	Port[] ports;
 	private int thiefPosition;
 	//if we really want to optimize, we can use a hashmap to map tiles to their roll
 
@@ -46,6 +47,10 @@ public class Board {
 	
 	public void setThiefPosition(int position) {
 		thiefPosition = position;
+	}
+
+	public Port[] getPorts() {
+		return ports;
 	}
 	
 	

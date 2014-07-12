@@ -85,9 +85,6 @@ public class Intersection {
 			}else{
 				sprite = new Sprite(building.getImg());
 			}
-			if(Math.random()<.05){
-				sprite = new Sprite(new Texture("redSettlement.gif")); //testing for sprite
-			}
 			sprite.setBounds(CoordinateUtil.intToGame(ID).x, CoordinateUtil.intToGame(ID).y,64,64);
 		}
 		
