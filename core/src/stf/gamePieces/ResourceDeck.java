@@ -1,5 +1,6 @@
 package stf.gamePieces;
 
+import java.util.List;
 import java.util.Stack;
 
 public class ResourceDeck {
@@ -39,5 +40,11 @@ public class ResourceDeck {
 	
 	public void returnCard(ResourceCard card) {
 		deck.push(card);
+	}
+	
+	public void returnCards(List<ResourceCard> cards) {
+		for (int i = 0; i < cards.size(); i++) {
+			deck.push(cards.get(i));
+		}
 	}
 }

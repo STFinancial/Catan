@@ -61,6 +61,7 @@ public class Tile {
 		return sprite;
 	}
 	
+	
 	public String toString(){
 		return "" + x + " , " + y + " type: " + type + " number: " + pip;
 	}

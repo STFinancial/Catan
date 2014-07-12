@@ -53,6 +53,7 @@ public class Table {
 		
 		Tile tempTile;
 		int tempTileNumber;
+		int thiefPosition = board.getThiefPosition();
 		int numPlayers = players.size();
 		Person paidPlayer;
 		Intersection buildingIntersection;
@@ -61,8 +62,8 @@ public class Table {
 			tempTile = tiles[i];
 			tempTileNumber = tempTile.getNumber();
 			tempDeck = getDeck(tempTile.getType());
-			//if the roll is equal to the tile pip
-			if (roll == tempTileNumber) {
+			//if the roll is equal to the tile pip and the thief isn't there
+			if (roll == tempTileNumber && i != thiefPosition) {
 				//pay players starting with the player who rolled
 				for (int j = currentPlayerIndex; j < currentPlayerIndex + numPlayers; ++j) {
 					paidPlayer = players.get(j % numPlayers);
@@ -96,7 +97,7 @@ public class Table {
 		MoveType type = move.getType();
 		/* Moves should be validated before passed to this method */
 		switch (type) {
-		case BUILD: performBuild(move);
+		case BUILD: performBuild(move, false);
 		break;
 		
 		case PLAY: performPlay(move);
@@ -154,19 +155,38 @@ public class Table {
 		}
 	}
 	
-	private void performBuild(Move move) {
-		if (move.getSubType() == MoveSubType.ROAD) {
+	private void performBuild(Move move, boolean freeRoad) {
+		Person performingPlayer = move.getPerformingPlayer();
+		if (move.getSubType() == MoveSubType.CARD) {
+			DevelopmentCard card = developmentDeck.dealCard();
+			card.canPlay = false;
+			performingPlayer.addDevelopmentCard(card);
+			performingPlayer.removeResourceCards(ResourceType.WHEAT, 1);
+			performingPlayer.removeResourceCards(ResourceType.SHEEP, 1);
+			performingPlayer.removeResourceCards(ResourceType.ORE, 1);
+		} else if (move.getSubType() == MoveSubType.ROAD) {
 			Path p = board.getPath(move.getBuildPosition());
 			p.build(move.getPerformingPlayer().getNextPlayableRoad());
+			if (!freeRoad) {
+				performingPlayer.removeResourceCards(ResourceType.BRICK, 1);
+				performingPlayer.removeResourceCards(ResourceType.LOGS, 1);
+			}
+			
 		} else {
 			Intersection i = board.getIntersection(move.getBuildPosition());
 			if (move.getSubType() == MoveSubType.SETTLEMENT) {
 				i.build(move.getPerformingPlayer().getNextPlayableSettlement());
+				performingPlayer.removeResourceCards(ResourceType.WHEAT, 1);
+				performingPlayer.removeResourceCards(ResourceType.BRICK, 1);
+				performingPlayer.removeResourceCards(ResourceType.LOGS, 1);
+				performingPlayer.removeResourceCards(ResourceType.SHEEP, 1);
 			} else {
 				move.getPerformingPlayer().returnSettlement((Settlement) i.getBuilding());
 				i.build(move.getPerformingPlayer().getNextPlayableCity());
+				performingPlayer.removeResourceCards(ResourceType.WHEAT, 2);
+				performingPlayer.removeResourceCards(ResourceType.ORE, 3);
+				
 			}
-			
 		}
 	}
 	
@@ -175,32 +195,113 @@ public class Table {
 		/* Should this method also start the next person's turn and get their move? */
 		/* This essentially could be the gameplay loop */
 		currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+		Person performingPlayer = move.getPerformingPlayer();
+		performingPlayer.hasRolled = false;
+		performingPlayer.hasPlayedDevelopmentCard = false;
+		
+		//need to allow players to now use cards they just purchased
+		ArrayList<DevelopmentCard> hand = performingPlayer.getDevelopmentHand();
+		for (int i = 0; i < hand.size(); ++i) {
+			hand.get(i).canPlay = true;
+		}
+		
 	}
 	
 	private void performPlay(Move move) {
-		//TODO: THIS METHOD
-		
+		MoveSubType subType = move.getSubType();
+		Person usingPlayer = move.getPerformingPlayer();
+		usingPlayer.hasPlayedDevelopmentCard = true;
+		if (subType == MoveSubType.KNIGHT) {
+			Person targetPlayer = move.getTargetPlayer();
+			usingPlayer.addResourceCard(move.getStolenCard());
+			targetPlayer.removeResourceCards(move.getStolenCard().getType(), 1);			
+		} else if (subType == MoveSubType.MONOPOLY) {
+			Person tempPerson;
+			ArrayList<ResourceCard> cards = new ArrayList<ResourceCard>();
+			for (int i = 0; i < players.size(); ++i) {
+				tempPerson = players.get(i);
+				if (!tempPerson.equals(usingPlayer)) {
+					cards.addAll(tempPerson.removeResourceCards(move.getMonopolyType()));	
+				}
+			}
+			usingPlayer.addResourceCards(cards);
+		} else if (subType == MoveSubType.ROADBUILDER) {
+			if (move.getFirstPathID() > -1) {
+				Move firstMove = new Move(MoveType.BUILD, MoveSubType.ROAD, usingPlayer, move.getFirstPathID());
+				performBuild(firstMove, true);
+			}
+			if (move.getSecondPathID() > -1) {
+				Move secondMove = new Move(MoveType.BUILD, MoveSubType.ROAD, usingPlayer, move.getSecondPathID());
+				performBuild(secondMove, true);
+			}
+		} else if (subType == MoveSubType.YEAROFPLENTY) {
+			usingPlayer.addResourceCard(getDeck(move.getFirstType()).dealCard());
+			usingPlayer.addResourceCard(getDeck(move.getSecondType()).dealCard());
+			
+		} else {
+			System.out.println("Shouldn't get here. Perform Play");
+		}
 		return;
 	}
 	
 	private void performRollAndGiveResources(Move move) {
 		dice.roll();
+		move.getPerformingPlayer().hasRolled = true;
 		payResources();
 	}
 	
 	private void performTrade(Move move) {
-		/* Should be doing tests here to ensure that the correct subtypes re being set */
-		Person player =  move.getPerformingPlayer();
-		if (move.getSubType() == MoveSubType.PORT) {
-			PortType portType = move.getPortType();
-			ResourceDeck deck;
-			switch (portType) {
-			case RANDOM:
-				deck = getDeck(move.getReceivingType());
-			//	player.removeResourceCards(type, quantity)
+		Person performingPlayer =  move.getPerformingPlayer();
+		if (move.getSubType() == MoveSubType.PORT || move.getSubType() == MoveSubType.FOURTOONE) {
+			ResourceType givingType = move.getGivingType();
+			ResourceType receivingType = move.getReceivingType();
+			ResourceDeck deckToReturnTo = getDeck(givingType);
+			ResourceDeck deckToDealFrom;
+			int cardsToReturn;
+			if (move.getSubType() == MoveSubType.PORT) {
+				if (move.getPortType() == PortType.RANDOM) {
+					deckToDealFrom = getDeck(receivingType);
+					cardsToReturn = 3;
+				} else {
+					cardsToReturn = 2;
+					switch (move.getPortType()) {
+					case WHEAT:
+						deckToDealFrom = wheatDeck;
+						break;
+					case LOGS:
+						deckToDealFrom = logsDeck;
+						break;
+						
+					case SHEEP:
+						deckToDealFrom = sheepDeck;
+						break;
+						
+					case ORE:
+						deckToDealFrom = oreDeck;
+						break;
+						
+					case BRICK:
+						deckToDealFrom = brickDeck;
+						break;
+					
+					default: System.out.println("Shouldn't get here. PerformTrade switch.");
+						deckToDealFrom = null;
+						break;
+					}
+				}
+			} else {
+				cardsToReturn = 4;
+				deckToDealFrom = getDeck(receivingType);
 			}
-		} else {
 			
+			deckToReturnTo.returnCards(performingPlayer.removeResourceCards(givingType, cardsToReturn));
+			performingPlayer.addResourceCard(deckToDealFrom.dealCard());
+			
+		} else {
+			//trade between players
+			Person receivingPlayer = move.getTradePartner();
+			receivingPlayer.addResourceCards(performingPlayer.removeResourceCards(move.getGivingCards()));
+			performingPlayer.addResourceCards(receivingPlayer.removeResourceCards(move.getReceivingCards()));
 		}
 	}
 	
