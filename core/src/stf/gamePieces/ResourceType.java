@@ -3,11 +3,11 @@ package stf.gamePieces;
 import com.badlogic.gdx.graphics.Texture;
 
 public enum ResourceType {
-	BRICK ("brick.gif"), 
-	LOGS ("logs.gif"),
-	ORE ("ore.gif"), 
-	SHEEP ("sheep.gif"), 
-	WHEAT ("wheat.gif");
+	BRICK ("brick.png"), 
+	LOGS ("logs.png"),
+	ORE ("ore.png"), 
+	SHEEP ("sheep.png"), 
+	WHEAT ("wheat.png");
 	
 	
 	Texture image;

@@ -20,7 +20,7 @@ public enum PortType {
 		if(type != null){
 			image = type.getImage();
 		}else{
-			image = new Texture("randomPort.gif");
+			image = new Texture("randomPort.png");
 		}
 	}
 	
