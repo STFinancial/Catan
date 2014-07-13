@@ -263,14 +263,101 @@ public class CoordinateUtil {
 	public static Vector3 pathToGame(int ID) {
 		float x = 0, y = 0;
 		
+		if(ID < 6){
+			y = 3.75f*TILEHEIGHT;
+			x = TILEWIDTH;
+			x+=TILEWIDTH/2*(ID-0);
+			if(ID%2 == 1){
+				y+=TILEHEIGHT * 0.0f;
+			}
+		}else if(ID > 5 && ID < 14){
+			y = 3f*TILEHEIGHT;
+			x = .5f*TILEWIDTH;
+			x+=TILEWIDTH/2*(ID-6);
+			if(ID%2 == 0){
+				y+=TILEHEIGHT * 0.0f;
+			}
+		}else if(ID > 13 && ID < 24){
+			y = 2.25f*TILEHEIGHT;
+			x = 0;
+			x+=TILEWIDTH/2*(ID-14);
+			if(ID%2 == 1){
+				y+=TILEHEIGHT * 0.0f;
+			}
+		}else if(ID > 23 && ID < 34){
+			y = 1.5f*TILEHEIGHT;
+			x = 0;
+			x+=TILEWIDTH/2*(ID-24);
+			if(ID%2 == 1){
+				y+=TILEHEIGHT * 0.0f;
+			}
+		}else if(ID > 33 && ID < 42){
+			y = .75f * TILEHEIGHT;
+			x = .5f*TILEWIDTH;
+			x+=TILEWIDTH/2*(ID-34);
+			if(ID%2 == 0){
+				y+=TILEHEIGHT * 0.0f;
+			}
+		}else if(ID > 41 && ID < 48){
+			y = 0;
+			x = TILEWIDTH;
+			x+=TILEWIDTH/2*(ID-42);
+			if(ID%2 == 1){
+				y+=TILEHEIGHT * 0.0f;
+			}
+		}else if(ID > 47 && ID < 52){
+			x = .55f * TILEWIDTH;
+			x+=TILEWIDTH*(ID-48);
+			y = 3.36f * TILEHEIGHT;
+		}else if(ID > 51 && ID < 57){
+			x = .05f * TILEWIDTH;
+			x+=TILEWIDTH*(ID-52);
+			y = 2.605f * TILEHEIGHT;
+			
+		}else if(ID > 56 && ID < 63){
+			x = -.45f * TILEWIDTH;
+			x+=TILEWIDTH*(ID-57);
+			y = 1.855f * TILEHEIGHT;
+			
+		}else if(ID > 62 && ID < 68){
+			x = .05f * TILEWIDTH;
+			x+=TILEWIDTH*(ID-63);
+			y = 1.105f * TILEHEIGHT;
+			
+		}else if(ID > 67 && ID < 72){
+			x = .55f * TILEWIDTH;
+			x+=TILEWIDTH*(ID-68);
+			y = 0.355f * TILEHEIGHT;
+			
+		}
+		
+		if(pathRotation(ID) == -27){
+			x+=TILEWIDTH * .175f;
+			y+=TILEHEIGHT * .017f;
+		}else if(pathRotation(ID) == 27){
+			x+= TILEWIDTH * -0.00f;
+			y+=TILEHEIGHT * .105f;
+		}
 		
 		
 		return new Vector3(x,y,0);
 	}
 
 	public static float pathRotation(int ID) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(ID < 24){
+			if(ID%2 == 0){
+				return 27;
+			}else{
+				return -27;
+			}
+		}else if(ID < 48){
+			if(ID%2 == 0){
+				return -27;
+			}else{
+				return 27;
+			}
+		}
+		return 90;
 	}
 
 	public static void setupGametoPath(Path[] paths) {

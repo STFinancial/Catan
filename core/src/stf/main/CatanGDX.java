@@ -76,6 +76,10 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 			p.getSprite().draw(batch);
 			p.getTypeSprite().draw(batch);
 		}
+
+		for(Path p : board.getPaths()){
+			p.getSprite().draw(batch);
+		}
 		batch.end();
 	}
 	
