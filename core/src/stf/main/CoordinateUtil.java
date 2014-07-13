@@ -18,6 +18,7 @@ public class CoordinateUtil {
 	static ArrayList<Circle> tileSpots;
 	static ArrayList<Circle> intSpots;
 	static ArrayList<Circle> portSpots;
+	public static ArrayList<Circle> pathSpots;
 
 	//may be too much overhead, now more for testing
 	public static Object getClickObject(Vector3 gameCoords, Board board){
@@ -39,6 +40,13 @@ public class CoordinateUtil {
 		for(Circle c: portSpots){
 			if (c.contains(gameCoords.x, gameCoords.y)){
 				return board.getPorts()[i];
+			}
+			i++;
+		}
+		i = 0;
+		for(Circle c: pathSpots){
+			if (c.contains(gameCoords.x, gameCoords.y)){
+				return board.getPaths()[i/2];
 			}
 			i++;
 		}
@@ -361,7 +369,34 @@ public class CoordinateUtil {
 	}
 
 	public static void setupGametoPath(Path[] paths) {
-		// TODO Auto-generated method stub
-		
+		pathSpots = new ArrayList<Circle>();
+		for (Path p: paths){
+			float x,y;
+			x = p.getSprite().getX();
+			y = p.getSprite().getY();
+			if(p.getSprite().getRotation() == 27){
+				x += TILEWIDTH * 0.18f;
+				y += TILEHEIGHT * -0.02f;
+			} else if(p.getSprite().getRotation() == -27){
+				x += TILEWIDTH * 0.00f;
+				y += TILEHEIGHT * 0.16f;
+			} else{
+				x += TILEWIDTH * 0.45f;
+				y += TILEHEIGHT * 0.07f;
+			}
+			pathSpots.add(new Circle(x,y,.45f*64));	
+			
+			if(p.getSprite().getRotation() == 27){
+				x += TILEWIDTH * 0.15f;
+				y += TILEHEIGHT * 0.08f;
+			} else if(p.getSprite().getRotation() == -27){
+				x += TILEWIDTH * 0.15f;
+				y += TILEHEIGHT * -0.08f;
+			} else{
+				x += TILEWIDTH * 0.00f;
+				y += TILEHEIGHT * 0.17f;
+			}
+			pathSpots.add(new Circle(x,y,.45f*64));	
+		}
 	}
 }

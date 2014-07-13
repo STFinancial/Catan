@@ -12,8 +12,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -23,15 +26,16 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 	Board board;
 	BitmapFont font;
 	private OrthographicCameraWithVirtualViewport camera;  
-    private MultipleVirtualViewportBuilder multipleVirtualViewportBuilder;  
-    @Override
+	private MultipleVirtualViewportBuilder multipleVirtualViewportBuilder;  
+	ShapeRenderer shapeRenderer;
+	@Override
 	public void create () {
-		
-	    multipleVirtualViewportBuilder = new MultipleVirtualViewportBuilder(800, 480, 854, 600);  
-        VirtualViewport virtualViewport = multipleVirtualViewportBuilder.getVirtualViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());  
-          
-        camera = new OrthographicCameraWithVirtualViewport(virtualViewport);  
-        camera.position.set(0f, 0f, 0f);  
+
+		multipleVirtualViewportBuilder = new MultipleVirtualViewportBuilder(800, 480, 854, 600);  
+		VirtualViewport virtualViewport = multipleVirtualViewportBuilder.getVirtualViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());  
+		shapeRenderer = new ShapeRenderer();
+		camera = new OrthographicCameraWithVirtualViewport(virtualViewport);  
+		camera.position.set(0f, 0f, 0f);  
 		batch = new SpriteBatch();
 		board = new Board();
 		font =new BitmapFont();
@@ -60,8 +64,9 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 			System.out.println("got here");
 		}
 		camera.update();   
+
 		batch.begin();
-        batch.setProjectionMatrix(camera.combined); 
+		batch.setProjectionMatrix(camera.combined); 
 		for(Tile t : board.getTiles()){
 			t.getSprite().draw(batch);
 			if(t.getType() != TileType.DESERT){
@@ -77,28 +82,39 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 			p.getTypeSprite().draw(batch);
 		}
 
+		
 		for(Path p : board.getPaths()){
 			p.getSprite().draw(batch);
 		}
 		batch.end();
-	}
-	
-	 @Override  
-	    public void resize(int width, int height) {  
-	        super.resize(width, height);  
-	          
-	        VirtualViewport virtualViewport = multipleVirtualViewportBuilder.getVirtualViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());  
-	        camera.setVirtualViewport(virtualViewport);  
-	          
-	        camera.updateViewport();  
-	        // centers the camera at 0, 0 (the center of the virtual viewport)  
-	        camera.position.set(0f, 0f, 0f);  
-	          
-	       }  
-	
-	
-	public class MyGestureListener implements GestureListener{
 		
+		/*
+		shapeRenderer.setProjectionMatrix(camera.combined); 
+		shapeRenderer.begin(ShapeType.Line);
+		shapeRenderer.setColor(1, 1, 0, 1);
+		for(Circle c: CoordinateUtil.pathSpots){
+			shapeRenderer.circle(c.x, c.y, c.radius);
+		}
+		shapeRenderer.end();
+		*/
+	}
+
+	@Override  
+	public void resize(int width, int height) {  
+		super.resize(width, height);  
+
+		VirtualViewport virtualViewport = multipleVirtualViewportBuilder.getVirtualViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());  
+		camera.setVirtualViewport(virtualViewport);  
+
+		camera.updateViewport();  
+		// centers the camera at 0, 0 (the center of the virtual viewport)  
+		camera.position.set(0f, 0f, 0f);  
+
+	}  
+
+
+	public class MyGestureListener implements GestureListener{
+
 		@Override
 		public boolean touchDown(float x, float y, int pointer, int button) {
 			// TODO Auto-generated method stub
@@ -107,6 +123,7 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 
 		@Override
 		public boolean tap(float x, float y, int count, int button) {
+			System.out.println("\nTap Event !!!!!!!!!!!!!!");
 			System.out.println("Screen Coords " + x + " , " + y);
 			if(x < 15 && y < 15)
 				camera.zoom += .1f;
@@ -118,14 +135,17 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 			Object clickedObject = CoordinateUtil.getClickObject(gameCoords, board);
 			if(clickedObject != null){
 				if(clickedObject instanceof Tile){
-					System.out.println("tapped Tile: " + clickedObject);
-				}
-				if(clickedObject instanceof Intersection){
+					System.out.println("Tapped Tile: " + clickedObject);
+				}else if(clickedObject instanceof Intersection){
+					System.out.print("Tapped Intersection: ");
 					Intersection i = (Intersection) clickedObject;
 					i.printInfo();
-				}
-				if(clickedObject instanceof Port){
-					System.out.println("tapped Port: " + clickedObject);
+				}else if(clickedObject instanceof Port){
+					System.out.println("Tapped Port: " + clickedObject);
+				}else if(clickedObject instanceof Path){
+					Path p = (Path) clickedObject;
+					System.out.print("Tapped Path: ");
+					 p.printInfo();
 				}
 			}
 			return false;
@@ -154,7 +174,7 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 				camera.position.y = 1000;
 			if(camera.position.y < 0)
 				camera.position.y = 0;
-			
+
 			return false;
 		}
 
@@ -178,7 +198,7 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 			return false;
 		}
 
-	
+
 	}
 
 
