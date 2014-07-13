@@ -2,6 +2,7 @@ package stf.main;
 
 import stf.gamePieces.Board;
 import stf.gamePieces.Intersection;
+import stf.gamePieces.Path;
 import stf.gamePieces.Port;
 import stf.gamePieces.Tile;
 import stf.gamePieces.TileType;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
@@ -22,7 +24,6 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 	BitmapFont font;
 	private OrthographicCameraWithVirtualViewport camera;  
     private MultipleVirtualViewportBuilder multipleVirtualViewportBuilder;  
-	
     @Override
 	public void create () {
 		
@@ -41,9 +42,13 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 		for(Intersection i : board.getIntersections()){
 			i.updateSprite();
 		}
+		for(Path p : board.getPaths()){
+			p.updateSprite();
+		}
 		CoordinateUtil.setupGametoTile(board.getTiles());
 		CoordinateUtil.setupGametoInt(board.getIntersections());
 		CoordinateUtil.setupGametoPort(board.getPorts());
+		CoordinateUtil.setupGametoPath(board.getPaths());
 	}
 
 	@Override
@@ -98,12 +103,14 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 
 		@Override
 		public boolean tap(float x, float y, int count, int button) {
-			System.out.println(x + " , " + y);
+			System.out.println("Screen Coords " + x + " , " + y);
 			if(x < 15 && y < 15)
 				camera.zoom += .1f;
 			if(x < 15 && y > Gdx.graphics.getHeight() - 15)
 				camera.zoom -= .1f;
 			Vector3 gameCoords = camera.unproject(new Vector3(x,y,0));
+			System.out.println("Fame Coords " + gameCoords.x + " , " + gameCoords.y);
+
 			Object clickedObject = CoordinateUtil.getClickObject(gameCoords, board);
 			if(clickedObject != null){
 				if(clickedObject instanceof Tile){

@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 import stf.gamePieces.Board;
 import stf.gamePieces.Intersection;
+import stf.gamePieces.Path;
 import stf.gamePieces.Port;
 import stf.gamePieces.Tile;
 
@@ -10,7 +11,8 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector3;
 
 public class CoordinateUtil {
-	static final int TILESIZE = 256;
+	static final int TILEHEIGHT = 256;
+	static final int TILEWIDTH = 256;
 	static final int PORTSIZE = 256;
 	static final int INTERSECTIONSIZE = 64;
 	static ArrayList<Circle> tileSpots;
@@ -47,8 +49,8 @@ public class CoordinateUtil {
 		Vector3 toReturn = new Vector3();
 		float x = 0;
 		float y = 0;
-		x = Math.abs(2 - tileCoord.y) * TILESIZE/2 + TILESIZE * tileCoord.x;
-		y = (3*TILESIZE/4) * (4-tileCoord.y);
+		x = Math.abs(2 - tileCoord.y) * TILEWIDTH/2 + TILEWIDTH * tileCoord.x;
+		y = (3*TILEHEIGHT/4) * (4-tileCoord.y);
 		toReturn.x = x;
 		toReturn.y = y;
 		return toReturn;
@@ -59,11 +61,11 @@ public class CoordinateUtil {
 		for (Tile t: tiles){
 			float x = 0;
 			float y = 0;
-			x = Math.abs(2 - t.getY()) * TILESIZE/2 + TILESIZE * t.getX();
-			y = (3*TILESIZE/4) * (4-t.getY());
-			x += TILESIZE/2;
-			y += TILESIZE/2;
-			tileSpots.add(new Circle(x,y,.35f*TILESIZE));	
+			x = Math.abs(2 - t.getY()) * TILEWIDTH/2 + TILEWIDTH * t.getX();
+			y = (3*TILEHEIGHT/4) * (4-t.getY());
+			x += TILEWIDTH/2;
+			y += TILEHEIGHT/2;
+			tileSpots.add(new Circle(x,y,.35f*TILEHEIGHT));	
 		}
 	}
 
@@ -72,46 +74,46 @@ public class CoordinateUtil {
 		float x;
 		float y;
 		if(ID < 7){
-			y = 3.75f*TILESIZE;
-			x = TILESIZE;
-			x+=TILESIZE/2*(ID-0);
+			y = 3.75f*TILEHEIGHT;
+			x = TILEWIDTH;
+			x+=TILEWIDTH/2*(ID-0);
 			if(ID%2 == 1){
-				y+=TILESIZE/5;
+				y+=TILEHEIGHT/5;
 			}
 		}else if(ID > 6 && ID < 16){
-			y = 3f*TILESIZE;
-			x = .5f*TILESIZE;
-			x+=TILESIZE/2*(ID-7);
+			y = 3f*TILEHEIGHT;
+			x = .5f*TILEWIDTH;
+			x+=TILEWIDTH/2*(ID-7);
 			if(ID%2 == 0){
-				y+=TILESIZE/5;
+				y+=TILEHEIGHT/5;
 			}
 		}else if(ID > 15 && ID < 27){
-			y = 2.25f*TILESIZE;
+			y = 2.25f*TILEHEIGHT;
 			x = 0;
-			x+=TILESIZE/2*(ID-16);
+			x+=TILEWIDTH/2*(ID-16);
 			if(ID%2 == 1){
-				y+=TILESIZE/5;
+				y+=TILEHEIGHT/5;
 			}
 		}else if(ID > 26 && ID < 38){
-			y = 1.5f*TILESIZE;
+			y = 1.5f*TILEHEIGHT;
 			x = 0;
-			x+=TILESIZE/2*(ID-27);
+			x+=TILEWIDTH/2*(ID-27);
 			if(ID%2 == 1){
-				y+=TILESIZE/5;
+				y+=TILEHEIGHT/5;
 			}
 		}else if(ID > 37 && ID < 47){
-			y = .75f * TILESIZE;
-			x = .5f*TILESIZE;
-			x+=TILESIZE/2*(ID-38);
+			y = .75f * TILEHEIGHT;
+			x = .5f*TILEWIDTH;
+			x+=TILEWIDTH/2*(ID-38);
 			if(ID%2 == 0){
-				y+=TILESIZE/5;
+				y+=TILEHEIGHT/5;
 			}
 		}else{
 			y = 0;
-			x = TILESIZE;
-			x+=TILESIZE/2*(ID-47);
+			x = TILEWIDTH;
+			x+=TILEWIDTH/2*(ID-47);
 			if(ID%2 == 1){
-				y+=TILESIZE/5;
+				y+=TILEHEIGHT/5;
 			}
 		}
 		x -= INTERSECTIONSIZE /2;
@@ -137,40 +139,40 @@ public class CoordinateUtil {
 
 		switch (ID) {
 		case 0:
-			x = TILESIZE*.65f;
-			y = TILESIZE*3.75f;
+			x = TILEWIDTH*.65f;
+			y = TILEHEIGHT*3.75f;
 			break;
 		case 1:
-			x = TILESIZE*-0.35f;
-			y = TILESIZE*2.4f;
+			x = TILEWIDTH*-0.35f;
+			y = TILEHEIGHT*2.4f;
 			break;
 		case 2:
-			x = TILESIZE*-0.4f;
-			y = TILESIZE*.7f;
+			x = TILEWIDTH*-0.4f;
+			y = TILEHEIGHT*.7f;
 			break;
 		case 3:
-			x = TILESIZE* 0.6f;
-			y = TILESIZE * -0.7f;
+			x = TILEWIDTH* 0.6f;
+			y = TILEHEIGHT * -0.7f;
 			break;
 		case 4:
-			x = TILESIZE * 2.3f;
-			y = TILESIZE * -0.7f;
+			x = TILEWIDTH * 2.3f;
+			y = TILEHEIGHT * -0.7f;
 			break;
 		case 5:
-			x = TILESIZE * 3.9f;
-			y = TILESIZE* 0.0f;
+			x = TILEWIDTH * 3.9f;
+			y = TILEHEIGHT* 0.0f;
 			break;
 		case 6:
-			x = TILESIZE * 4.9f;
-			y = TILESIZE*1.5f;
+			x = TILEWIDTH * 4.9f;
+			y = TILEHEIGHT*1.5f;
 			break;
 		case 7:
-			x = TILESIZE * 3.95f;
-			y = TILESIZE*2.95f;
+			x = TILEWIDTH * 3.95f;
+			y = TILEHEIGHT*2.95f;
 			break;
 		default:
-			x = TILESIZE * 2.4f;
-			y = TILESIZE*3.75f;
+			x = TILEWIDTH * 2.4f;
+			y = TILEHEIGHT*3.75f;
 			break;
 		}
 		
@@ -205,40 +207,40 @@ public class CoordinateUtil {
 		y = portToGame(ID).y;
 		switch (ID) {
 		case 0:
-			x += TILESIZE*0.29f;
-			y += TILESIZE*0.58f;
+			x += TILEWIDTH*0.285f;
+			y += TILEHEIGHT*0.59f;
 			break;
 		case 1:
-			x += TILESIZE*0.15f;
-			y += TILESIZE*0.40f;
+			x += TILEWIDTH*0.145f;
+			y += TILEHEIGHT*0.395f;
 			break;
 		case 2:
-			x += TILESIZE*0.15f;
-			y += TILESIZE*0.35f;
+			x += TILEWIDTH*0.145f;
+			y += TILEHEIGHT*0.35f;
 			break;
 		case 3:
-			x += TILESIZE*0.29f;
-			y += TILESIZE*0.15f;
+			x += TILEWIDTH*0.298f;
+			y += TILEHEIGHT*0.155f;
 			break;
 		case 4:
-			x += TILESIZE*0.45f;
-			y += TILESIZE*0.15f;
+			x += TILEWIDTH*0.455f;
+			y += TILEHEIGHT*0.155f;
 			break;
 		case 5:
-			x += TILESIZE*0.47f;
-			y += TILESIZE*0.16f;
+			x += TILEWIDTH*0.475f;
+			y += TILEHEIGHT*0.165f;
 			break;
 		case 6:
-			x += TILESIZE*0.60f;
-			y += TILESIZE*0.39f;
+			x += TILEWIDTH*0.605f;
+			y += TILEHEIGHT*0.38f;
 			break;
 		case 7:
-			x += TILESIZE*0.48f;
-			y += TILESIZE*0.57f;
+			x += TILEWIDTH*0.485f;
+			y += TILEHEIGHT*0.575f;
 			break;
 		default:
-			x += TILESIZE*0.45f;
-			y += TILESIZE*0.58f;
+			x += TILEWIDTH*0.45f;
+			y += TILEHEIGHT*0.595f;
 			break;
 		}
 		
@@ -256,5 +258,23 @@ public class CoordinateUtil {
 			portSpots.add(new Circle(x,y,.6f*64));	
 			ID++;
 		}
+	}
+
+	public static Vector3 pathToGame(int ID) {
+		float x = 0, y = 0;
+		
+		
+		
+		return new Vector3(x,y,0);
+	}
+
+	public static float pathRotation(int ID) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public static void setupGametoPath(Path[] paths) {
+		// TODO Auto-generated method stub
+		
 	}
 }

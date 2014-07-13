@@ -2,11 +2,18 @@ package stf.gamePieces;
 
 import java.util.ArrayList;
 
+import stf.main.CoordinateUtil;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector3;
+
 public class Path {
 	Road road;
 	ArrayList<Path> adjacentPaths;
 	int ID;
 	ArrayList<Intersection> spanningIntersections;
+	private Sprite sprite;
 	
 	
 	Path(int ID) {
@@ -38,6 +45,18 @@ public class Path {
 		}
 		System.out.println();
 	}
+	
+	 //To only be called on creation 
+	public void updateSprite(){
+		sprite = new Sprite(new Texture("path.gif"));
+		sprite.setBounds(CoordinateUtil.pathToGame(ID).x, CoordinateUtil.pathToGame(ID).y,128,128);
+		sprite.rotate(CoordinateUtil.pathRotation(ID));
+	}
+	
+	public Sprite getSprite(){
+		return sprite;
+	}
+	
 
 	
 }
