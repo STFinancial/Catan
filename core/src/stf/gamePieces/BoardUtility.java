@@ -25,6 +25,58 @@ public class BoardUtility {
 		return array;
 	}
 	
+	public static Intersection getEndPointIntersection(Road road) {
+		Path path = road.getPosition();
+		int pathID = path.getID();
+		ArrayList<Intersection> spanningIntersections = path.getSpanningIntersections();
+		PlayerColor color = road.getOwnerColor();
+		
+		Intersection tempInt;
+		Building tempBuilding;
+		ArrayList<Path> exitingPaths;
+		Path tempPath;
+		boolean hasConnectors;
+		Road tempRoad;
+		for (int i = 0; i < 2; ++i) {
+			tempInt = spanningIntersections.get(i);
+			tempBuilding = tempInt.getBuilding();
+			hasConnectors = false;
+			if (tempBuilding != null && tempBuilding.ownerColor != color) {
+				return tempInt;
+			} else {
+				exitingPaths = tempInt.getExitingPaths();
+				for (int j = 0; j < exitingPaths.size(); ++j) {
+					tempPath = exitingPaths.get(j);
+					if (tempPath.getID() != pathID) {
+						tempRoad = tempPath.getRoad();
+						if (tempRoad != null) {
+							hasConnectors = hasConnectors || tempRoad.getOwnerColor() == color;
+						}
+					}
+				}
+			}
+			if (!hasConnectors) {
+				return tempInt;
+			}
+		}
+		
+		return null;
+	}
+	
+	public static Intersection getInterveningIntersection(Path path1, Path path2) {
+		ArrayList<Intersection> spanningInts1 = path1.getSpanningIntersections();
+		ArrayList<Intersection> spanningInts2 = path2.getSpanningIntersections();
+		Intersection int11 = spanningInts1.get(0), int21 = spanningInts2.get(0);
+		if (int11.getID() == int21.getID()) {
+			return int11;
+		}
+		Intersection int22 = spanningInts2.get(1);
+		if (int11.getID() == int22.getID()) {
+			return int11;
+		}
+		return spanningInts1.get(1);
+	}
+	
 	/* A method that puts together all the necessary board pieces */
 	public static void initializeBoard(Board board) {
 		initializeTiles(board);
@@ -35,6 +87,49 @@ public class BoardUtility {
 		placePorts(board);
 		setIntersectionsAndPathsToTiles(board);
 		printInfo(board);
+	}
+	
+	public static boolean isEndpoint(Road road) {
+		Path path = road.getPosition();
+		int pathID = path.getID();
+		ArrayList<Intersection> spanningIntersections = path.getSpanningIntersections();
+		PlayerColor color = road.getOwnerColor();
+		
+		//conditions for endpoint
+			//either:
+				//one of the spanning intersections has an enemy building on it
+				//all exiting paths of one or more of the spanning intersections do not contain roads of the same player
+		
+		Intersection tempInt;
+		Building tempBuilding;
+		ArrayList<Path> exitingPaths;
+		Path tempPath;
+		boolean hasConnectors;
+		Road tempRoad;
+		for (int i = 0; i < 2; ++i) {
+			tempInt = spanningIntersections.get(i);
+			tempBuilding = tempInt.getBuilding();
+			hasConnectors = false;
+			if (tempBuilding != null && tempBuilding.ownerColor != color) {
+				return true;
+			} else {
+				exitingPaths = tempInt.getExitingPaths();
+				for (int j = 0; j < exitingPaths.size(); ++j) {
+					tempPath = exitingPaths.get(j);
+					if (tempPath.getID() != pathID) {
+						tempRoad = tempPath.getRoad();
+						if (tempRoad != null) {
+							hasConnectors = hasConnectors || tempRoad.getOwnerColor() == color;
+						}
+					}
+				}
+			}
+			if (!hasConnectors) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	public static void printInfo(Board board) {

@@ -11,8 +11,13 @@ public abstract class Person {
 	/* If optimization is needed, linked lists "might" help (see removeResourceCards) */
 	protected ArrayList<DevelopmentCard> developmentHand;
 	protected ArrayList<ResourceCard> resourceHand;
+	
+	//in the future, these and 'cities' could change to playedCities and unplayedCities
+	//this change is useful for road, but possibly 'only' useful for road
 	protected ArrayList<Road> roads;
 	protected ArrayList<Settlement> settlements;
+	
+	ArrayList<Road> longestRoad;
 	
 	protected int numPlayedCities;
 	protected int numPlayedKnights;
@@ -101,6 +106,10 @@ public abstract class Person {
 	
 	public ArrayList<DevelopmentCard> getDevelopmentHand() {
 		return developmentHand;
+	}
+	
+	public ArrayList<Road> getLongestRoad() {
+		return longestRoad;
 	}
 	
 	City getNextPlayableCity() {
@@ -196,6 +205,76 @@ public abstract class Person {
 		ResourceCard card = resourceHand.remove(rand.nextInt(resourceHand.size()));
 		incrementResourceCounters(card.getType(), -1);
 		return card;
+	}
+	
+	public void updateLongestRoad() {
+		
+		boolean foundStartPoint = false;
+		Road currentRoad;
+		ArrayList<Road> currentLongest = null;
+		int currentLongestLength = 0;
+		ArrayList<Road> current;
+		for (int i = 0; i < numPlayedRoads; ++i) {
+			currentRoad = roads.get(i);
+			if (BoardUtility.isEndpoint(currentRoad)) {
+				foundStartPoint = true;
+				current = getLongestRoad(new boolean[72], currentRoad, BoardUtility.getEndPointIntersection(currentRoad));
+				if (current.size() > currentLongestLength) {
+					currentLongestLength = current.size();
+					currentLongest = current;
+				}
+			}
+		}
+		
+		if (!foundStartPoint) {
+			for (int i = 0; i < numPlayedRoads; ++i) {
+				currentRoad = roads.get(i);
+				current = getLongestRoad(new boolean[72], currentRoad, currentRoad.getPosition().getSpanningIntersections().get(0));
+				if (current.size() > currentLongestLength) {
+					currentLongestLength = current.size();
+					currentLongest = current;
+				}
+			}
+		}
+		
+		longestRoad = currentLongest;
+	}
+	
+	private ArrayList<Road> getLongestRoad(boolean[] checked, Road currentRoad, Intersection reference) {
+		
+		checked[currentRoad.getPosition().getID()] = true;
+		
+		if (BoardUtility.isEndpoint(currentRoad)) {
+			ArrayList<Road> ROWD = new ArrayList<Road>();
+			ROWD.add(currentRoad);
+			return ROWD;
+		}
+		
+		Path roadPath = currentRoad.getPosition();
+		ArrayList<Path> exitingPaths = reference.getExitingPaths();
+		Path currentPath;
+		
+		int currentLongestLength = 0;
+		ArrayList<Road> currentLongest = null;
+		ArrayList<Road> temp;
+		Road tempRoad;
+		for (int i = 0; i < exitingPaths.size(); ++i) {
+			currentPath = exitingPaths.get(i);
+			tempRoad = currentPath.getRoad();
+			if (currentPath.getID() != roadPath.getID()) {
+				if (tempRoad != null && tempRoad.getOwnerColor() == color) {
+					temp = getLongestRoad(checked, tempRoad, BoardUtility.getInterveningIntersection(currentPath, roadPath));
+					if (temp.size() > currentLongestLength) {
+						currentLongestLength = temp.size();
+						currentLongest = temp;
+					}
+				}
+			}
+			
+		}
+		
+		currentLongest.add(currentRoad);
+		return currentLongest;
 	}
 	
 	/* This should be called ONLY on valid moves */

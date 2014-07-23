@@ -171,6 +171,7 @@ public class Table {
 				performingPlayer.removeResourceCards(ResourceType.BRICK, 1);
 				performingPlayer.removeResourceCards(ResourceType.LOGS, 1);
 			}
+			performingPlayer.updateLongestRoad();
 			
 		} else {
 			Intersection i = board.getIntersection(move.getBuildPosition());

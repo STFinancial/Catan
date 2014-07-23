@@ -27,8 +27,16 @@ public class Path {
 		road.setPosition(this);
 	}
 	
+	public ArrayList<Path> getAdjacentPaths() {
+		return adjacentPaths;
+	}
+	
 	public int getID() {
 		return ID;
+	}
+	
+	public Road getRoad() {
+		return road;
 	}
 
 	public ArrayList<Intersection> getSpanningIntersections() {

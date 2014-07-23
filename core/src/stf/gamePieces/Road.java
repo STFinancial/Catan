@@ -8,6 +8,11 @@ public class Road {
 		this.ownerColor = ownerColor;
 	}
 	
+	
+	PlayerColor getOwnerColor() {
+		return ownerColor;
+	}
+	
 	public Path getPosition() {
 		return position;
 	}
