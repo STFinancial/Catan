@@ -33,6 +33,9 @@ public abstract class Person {
 	boolean hasRolled;
 	boolean hasPlayedDevelopmentCard;
 	
+	public boolean hasLongestRoad = false;
+	public boolean hasLargestArmy = false;
+	
 	Table table;
 	
 	public Person(PlayerColor color) {
@@ -184,6 +187,25 @@ public abstract class Person {
 	
 	public ArrayList<Settlement> getSettlements() {
 		return settlements;
+	}
+	
+	public int getVictoryPoints() {
+		int total = 0;
+		total += numPlayedSettlements + numPlayedCities * 2;
+		if (hasLongestRoad) {
+			total += 2;
+		}
+		if (hasLargestArmy) {
+			total += 2;
+		}
+		for(DevelopmentCard temp: developmentHand) {
+			if (temp.isVictoryPoint()) {
+				
+				++total;
+			}
+		}
+		
+		return total;
 	}
 	
 	public void incrementPlayedKnights() {
