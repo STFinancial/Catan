@@ -45,6 +45,28 @@ public class Table {
 		return players.get(currentPlayerIndex);
 	}
 	
+	public Person getWinner() {
+		if (hasWinner()) {
+			for (Person p: players) {
+				if (p.getVictoryPoints() >= 10) {
+					return p;
+				}
+			}
+			return null;
+		} else {
+			return null;
+		}
+	}
+	
+	public boolean hasWinner() {
+		for (Person p: players) {
+			if (p.getVictoryPoints() >= 10) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	/* Consider visibility in this (should it be public?) */
 	/* Should this be in the board class? (lots of imports going on here) */
 	public void payResources(){
