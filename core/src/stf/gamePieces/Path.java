@@ -6,7 +6,6 @@ import stf.main.CoordinateUtil;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector3;
 
 public class Path {
 	Road road;

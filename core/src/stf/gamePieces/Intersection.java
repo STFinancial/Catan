@@ -77,7 +77,6 @@ public class Intersection {
 	}
 	
 	
-	 //To only be called on creation 
 		public void updateSprite(){
 			coords = new Vector3(x,y,0);
 			if(building == null){

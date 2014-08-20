@@ -1,7 +1,5 @@
 package stf.gamePieces;
 
-import java.util.ArrayList;
-
 
 public class Board {
 	Intersection[] intersections;

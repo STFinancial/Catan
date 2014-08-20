@@ -2,6 +2,8 @@ package stf.gamePieces;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
+
 
 public class Table {
 	private Board board;
@@ -303,6 +305,32 @@ public class Table {
 			Person receivingPlayer = move.getTradePartner();
 			receivingPlayer.addResourceCards(performingPlayer.removeResourceCards(move.getGivingCards()));
 			performingPlayer.addResourceCards(receivingPlayer.removeResourceCards(move.getReceivingCards()));
+		}
+	}
+
+	public Board getBoard() {
+		return board;
+	}
+	
+	public void render(Batch batch){
+		for(Tile t : board.getTiles()){
+			t.getSprite().draw(batch);
+			if(t.getType() != TileType.DESERT){
+				t.getPipSprite().draw(batch);
+			}
+		}
+		for(Intersection i : board.getIntersections()){
+			i.getSprite().draw(batch);
+		}
+
+		for(Port p : board.getPorts()){
+			p.getSprite().draw(batch);
+			p.getTypeSprite().draw(batch);
+		}
+
+		
+		for(Path p : board.getPaths()){
+			p.getSprite().draw(batch);
 		}
 	}
 	

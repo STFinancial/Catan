@@ -3,8 +3,6 @@ package stf.gamePieces;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.badlogic.gdx.math.Vector3;
-
 public class BoardUtility {
 	
 	
