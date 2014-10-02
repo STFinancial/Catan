@@ -8,11 +8,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 public class Port {
 	PortType type;
 	int index;
+	
 	public Port(PortType portType, int index) {
 		type = portType;
 		this.index = index;
 		updateSprite();
 	}
+	
 	Sprite sprite;
 	Sprite typeSprite;
 	

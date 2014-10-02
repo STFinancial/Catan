@@ -2,10 +2,8 @@ package coreTests;
 
 //import static org.junit.Assert.*;
 
-import org.junit.Assert;
 import org.junit.Test;
 
-import stf.gamePieces.ResourceCard;
 import stf.gamePieces.ResourceCollection;
 import stf.gamePieces.ResourceType;
 

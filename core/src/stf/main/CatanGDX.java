@@ -8,6 +8,8 @@ import stf.gamePieces.Tile;
 import stf.gui.GUI;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Peripheral;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
@@ -17,18 +19,20 @@ import com.badlogic.gdx.math.Vector2;
 public class CatanGDX extends com.badlogic.gdx.Game {
 	SpriteBatch batch;
 	Board board;
-
 	Table table;
 	GUI gui;
+	
 	@Override
 	public void create () {
-
+		Gdx.graphics.setContinuousRendering(false);
 		batch = new SpriteBatch();
 		table = new Table(4, 0);
 		board = table.getBoard();
-
 		
-		Gdx.input.setInputProcessor(new GestureDetector(new MyGestureListener()));
+		Gdx.input.isPeripheralAvailable(Peripheral.)
+		Gdx.input.setInputProcessor(new GestureDetector(listener));
+		Gdx.input.getInputProcessor();
+		Gdx.input.setInputProcessor(new InputHandler());
 		
 		//Probably should move this to table constructor
 		for(Tile t : board.getTiles()){
@@ -47,6 +51,7 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 		
 		
 		gui = new GUI(table);
+		Gdx.graphics.requestRendering();
 	}
 
 	@Override
@@ -70,63 +75,6 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 		super.resize(width, height);  
 		gui.resize();
 	}  
-
-
-	public class MyGestureListener implements GestureListener{
-
-		@Override
-		public boolean touchDown(float x, float y, int pointer, int button) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public boolean tap(float x, float y, int count, int button) {
-			gui.tap(x,y);
-			return false;
-		}
-
-		@Override
-		public boolean longPress(float x, float y) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public boolean fling(float velocityX, float velocityY, int button) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public boolean pan(float x, float y, float deltaX, float deltaY) {
-			gui.pan(deltaX,deltaY);
-			return false;
-		}
-
-		@Override
-		public boolean panStop(float x, float y, int pointer, int button) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public boolean zoom(float initialDistance, float distance) {
-
-			System.out.println(initialDistance);
-			System.out.println(distance);
-			return false;
-		}
-
-		@Override
-		public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2,
-				Vector2 pointer1, Vector2 pointer2) {
-			return false;
-		}
-
-
-	}
-
 
 	public Board getBoard() {
 		return board;
