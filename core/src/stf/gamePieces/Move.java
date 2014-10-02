@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Move {
 	private MoveType type;
 	private MoveSubType subType;
-	private Person performingPlayer;
+	private Player performingPlayer;
 	double score = 0;
 	
 	/* Keeps Track of Resource Types Needed */
@@ -17,13 +17,13 @@ public class Move {
 	//this "buildposition" really really really breaks encapsulation rules
 	private int buildPosition;
 	private PortType portType;
-	private Person tradePlayer;
+	private Player tradePlayer;
 	private ArrayList<ResourceCard> givingCards;
 	private ArrayList<ResourceCard> receivingCards;
 	
 	
 	/* Fields for Play Moves */
-	private Person targetPlayer;
+	private Player targetPlayer;
 	private int thiefPosition;
 	private ResourceCard stolenCard;
 	private ResourceType monopolyType;
@@ -31,14 +31,14 @@ public class Move {
 	private int secondPath;
 	
 	
-	public Move(MoveType type, MoveSubType subType, Person performingPlayer) {
+	public Move(MoveType type, MoveSubType subType, Player performingPlayer) {
 		this.type = type;
 		this.subType = subType;
 		this.performingPlayer = performingPlayer;
 	}
 	
 	//build constructor
-	public Move(MoveType type, MoveSubType subType, Person performingPlayer, int buildPosition) {
+	public Move(MoveType type, MoveSubType subType, Player performingPlayer, int buildPosition) {
 		this.type = type;
 		this.subType = subType;
 		this.buildPosition = buildPosition;
@@ -47,7 +47,7 @@ public class Move {
 	
 	
 	//port trade constructor
-	public Move(MoveType type, MoveSubType subType, Person performingPlayer, PortType portType, ResourceType receivingType) {
+	public Move(MoveType type, MoveSubType subType, Player performingPlayer, PortType portType, ResourceType receivingType) {
 		this.type = type;
 		this.subType = subType;
 		this.portType = portType;
@@ -56,7 +56,7 @@ public class Move {
 	}
 	
 	//random port type constructor
-	public Move(MoveType type, MoveSubType subType, Person performingPlayer, PortType portType, ResourceType givingType, ResourceType receivingType) {
+	public Move(MoveType type, MoveSubType subType, Player performingPlayer, PortType portType, ResourceType givingType, ResourceType receivingType) {
 		this.type = type;
 		this.subType = subType;
 		this.portType = portType;
@@ -68,7 +68,7 @@ public class Move {
 	
 	
 	//player trade constructor
-	public Move(MoveType type, MoveSubType subType, Person performingPlayer, Person tradePlayer, ArrayList<ResourceCard> givingCards, ArrayList<ResourceCard> receivingCards) {
+	public Move(MoveType type, MoveSubType subType, Player performingPlayer, Player tradePlayer, ArrayList<ResourceCard> givingCards, ArrayList<ResourceCard> receivingCards) {
 		this.type = type;
 		this.subType = subType;
 		this.tradePlayer = tradePlayer;
@@ -81,7 +81,7 @@ public class Move {
 	/* Play Move Constructors */
 	
 	/* Knight */
-	public Move(MoveType type, MoveSubType subType, Person usingPlayer, Person targetPlayer, int thiefPosition, ResourceCard stolenCard) {
+	public Move(MoveType type, MoveSubType subType, Player usingPlayer, Player targetPlayer, int thiefPosition, ResourceCard stolenCard) {
 		this.type = type;
 		this.subType = subType;
 		performingPlayer = usingPlayer;
@@ -91,7 +91,7 @@ public class Move {
 	}
 	
 	/* Monopoly */
-	public Move(MoveType type, MoveSubType subType, Person usingPlayer, ResourceType monopolyType) {
+	public Move(MoveType type, MoveSubType subType, Player usingPlayer, ResourceType monopolyType) {
 		this.type = type;
 		this.subType = subType;
 		performingPlayer = usingPlayer;
@@ -99,7 +99,7 @@ public class Move {
 	}
 	
 	/* Road Builder */
-	public Move(MoveType type, MoveSubType subType, Person usingPlayer, int firstPath, int secondPath) {
+	public Move(MoveType type, MoveSubType subType, Player usingPlayer, int firstPath, int secondPath) {
 		this.type = type;
 		this.subType = subType;
 		performingPlayer = usingPlayer;
@@ -108,7 +108,7 @@ public class Move {
 	}
 	
 	/* Year of Plenty */
-	public Move(MoveType type, MoveSubType subType, Person usingPlayer, ResourceType firstType, ResourceType secondType) {
+	public Move(MoveType type, MoveSubType subType, Player usingPlayer, ResourceType firstType, ResourceType secondType) {
 		this.type = type;
 		this.subType = subType;
 		performingPlayer = usingPlayer;
@@ -145,7 +145,7 @@ public class Move {
 		return thiefPosition;
 	}
 	
-	public Person getPerformingPlayer() {
+	public Player getPerformingPlayer() {
 		return performingPlayer;
 	}
 	
@@ -177,13 +177,13 @@ public class Move {
 		return subType;
 	}
 	
-	public Person getTargetPlayer() {
+	public Player getTargetPlayer() {
 		return targetPlayer;
 	}
 	
 
 	
-	public Person getTradePartner() {
+	public Player getTradePartner() {
 		return tradePlayer;
 	}
 	

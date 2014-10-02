@@ -2,11 +2,7 @@ package stf.gamePieces;
 
 import java.util.ArrayList;
 
-public class AI extends Person {
-
-	public AI(PlayerColor color) {
-		super(color);
-	}
+public class AI {
 	
 	@Override
 	public Move getMove() {

@@ -1,24 +1,21 @@
 package stf.gamePieces;
 
-public class Road {
-	PlayerColor ownerColor;
-	Path position;
+import com.badlogic.gdx.graphics.Texture;
+
+public class Road extends Placeable {
+	private Path position;
 	
-	public Road(PlayerColor ownerColor) {
-		this.ownerColor = ownerColor;
+	public Road(PlayerColor color) {
+		super(color);
 	}
-	
-	
-	PlayerColor getOwnerColor() {
-		return ownerColor;
+
+	public int getPoints() {
+		return 0;
 	}
-	
-	public Path getPosition() {
-		return position;
-	}
-	
-	
-	public void setPosition(Path position) {
-		this.position = position;
+
+	@Override
+	public Texture getImg() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -18,7 +18,6 @@ public class CatanGDX extends com.badlogic.gdx.Game {
 	SpriteBatch batch;
 	Board board;
 
-
 	Table table;
 	GUI gui;
 	@Override

@@ -1,55 +1,62 @@
 package stf.gamePieces;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 
 
 public class Table {
-	private Board board;
-	
-	private Dice dice;
-	
-	private DevelopmentDeck developmentDeck;
-	
-	private ArrayList<Person> players;
+	private final Board board = new Board();
+	private final DevelopmentDeck developmentDeck = new DevelopmentDeck();
+	private final ResourceCollection resourceDeck;
+	private List<Player> players = new ArrayList<Player>();
 	private int currentPlayerIndex; //Need at the moment for paying resources in correct order
 	
-	private ResourceDeck brickDeck;
-	private ResourceDeck logsDeck;
-	private ResourceDeck oreDeck;
-	private ResourceDeck sheepDeck;
-	private ResourceDeck wheatDeck;
+	private ResourceCollection brickDeck;
+	private ResourceCollection logsDeck;
+	private ResourceCollection oreDeck;
+	private ResourceCollection sheepDeck;
+	private ResourceCollection wheatDeck;
 	
 	/* Eventually we might want to allow players to pick their color */
-	public Table(int numPlayers, int numAI) {
-		board = new Board();
-		dice = new Dice();
-		developmentDeck = new DevelopmentDeck();
-		currentPlayerIndex = 0;
-		brickDeck = new ResourceDeck(ResourceType.BRICK);
-		logsDeck = new ResourceDeck(ResourceType.LOGS);
-		oreDeck = new ResourceDeck(ResourceType.ORE);
-		sheepDeck = new ResourceDeck(ResourceType.SHEEP);
-		wheatDeck = new ResourceDeck(ResourceType.WHEAT);
+	public Table(int humans, int ai) {
+		Map<ResourceType, Integer> resources = new HashMap<ResourceType, Integer>();
+		for (ResourceType type : ResourceType.values()) {
+			resources.put(type, 19);
+		}
+		resourceDeck = new ResourceCollection(resources);
 		
-		players = new ArrayList<Person>(numPlayers + numAI);
-		for (int i = 0; i < numPlayers + numAI; ++i) {
-			if (i < numPlayers) {
-				players.add(new Player(PlayerColor.getColor(i)));
-			} else {
-				players.add(new AI(PlayerColor.getColor(i)));
+		Queue<PlayerColor> availableColors =  new LinkedList<PlayerColor>();
+		availableColors.addAll(Arrays.asList(PlayerColor.values()));
+		
+		for (int i = 0; i < humans + ai; i++) {
+			boolean humanPlayer = true;
+			if (i < ai) {
+				humanPlayer = false;
 			}
+			players.add(new Player(availableColors.poll(), humanPlayer));
 		}
 	}
 	
-	public Person getCurrentPlayer() {
+	public Player getCurrentPlayer() {
 		return players.get(currentPlayerIndex);
 	}
 	
-	public Person getWinner() {
+	public Player getWinner() {
 		if (hasWinner()) {
-			for (Person p: players) {
+			for (Player p: players) {
 				if (p.getVictoryPoints() >= 10) {
 					return p;
 				}
@@ -61,7 +68,7 @@ public class Table {
 	}
 	
 	public boolean hasWinner() {
-		for (Person p: players) {
+		for (Player p: players) {
 			if (p.getVictoryPoints() >= 10) {
 				return true;
 			}
@@ -79,9 +86,9 @@ public class Table {
 		int tempTileNumber;
 		int thiefPosition = board.getThiefPosition();
 		int numPlayers = players.size();
-		Person paidPlayer;
+		Player paidPlayer;
 		Intersection buildingIntersection;
-		ResourceDeck tempDeck;
+		ResourceCollection tempDeck;
 		for (int i = 0; i < tiles.length; ++i) {
 			tempTile = tiles[i];
 			tempTileNumber = tempTile.getNumber();
@@ -143,7 +150,7 @@ public class Table {
 	}
 	
 	
-	private ResourceDeck getDeck(ResourceType type) {
+	private ResourceCollection getDeck(ResourceType type) {
 		switch (type) {
 		//wheat first for minute optimization.
 		case WHEAT: return wheatDeck;
@@ -161,7 +168,7 @@ public class Table {
 		}
 	}
 
-	private ResourceDeck getDeck(TileType type) {
+	private ResourceCollection getDeck(TileType type) {
 		switch (type) {
 		//wheat first for minute optimization.
 		case FIELDS: return wheatDeck;
@@ -180,7 +187,7 @@ public class Table {
 	}
 	
 	private void performBuild(Move move, boolean freeRoad) {
-		Person performingPlayer = move.getPerformingPlayer();
+		Player performingPlayer = move.getPerformingPlayer();
 		if (move.getSubType() == MoveSubType.CARD) {
 			DevelopmentCard card = developmentDeck.dealCard();
 			card.canPlay = false;
@@ -220,7 +227,7 @@ public class Table {
 		/* Should this method also start the next person's turn and get their move? */
 		/* This essentially could be the gameplay loop */
 		currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-		Person performingPlayer = move.getPerformingPlayer();
+		Player performingPlayer = move.getPerformingPlayer();
 		performingPlayer.hasRolled = false;
 		performingPlayer.hasPlayedDevelopmentCard = false;
 		
@@ -234,14 +241,14 @@ public class Table {
 	
 	private void performPlay(Move move) {
 		MoveSubType subType = move.getSubType();
-		Person usingPlayer = move.getPerformingPlayer();
+		Player usingPlayer = move.getPerformingPlayer();
 		usingPlayer.hasPlayedDevelopmentCard = true;
 		if (subType == MoveSubType.KNIGHT) {
-			Person targetPlayer = move.getTargetPlayer();
+			Player targetPlayer = move.getTargetPlayer();
 			usingPlayer.addResourceCard(move.getStolenCard());
 			targetPlayer.removeResourceCards(move.getStolenCard().getType(), 1);			
 		} else if (subType == MoveSubType.MONOPOLY) {
-			Person tempPerson;
+			Player tempPerson;
 			ArrayList<ResourceCard> cards = new ArrayList<ResourceCard>();
 			for (int i = 0; i < players.size(); ++i) {
 				tempPerson = players.get(i);
@@ -276,12 +283,12 @@ public class Table {
 	}
 	
 	private void performTrade(Move move) {
-		Person performingPlayer =  move.getPerformingPlayer();
+		Player performingPlayer =  move.getPerformingPlayer();
 		if (move.getSubType() == MoveSubType.PORT || move.getSubType() == MoveSubType.FOURTOONE) {
 			ResourceType givingType = move.getGivingType();
 			ResourceType receivingType = move.getReceivingType();
-			ResourceDeck deckToReturnTo = getDeck(givingType);
-			ResourceDeck deckToDealFrom;
+			ResourceCollection deckToReturnTo = getDeck(givingType);
+			ResourceCollection deckToDealFrom;
 			int cardsToReturn;
 			if (move.getSubType() == MoveSubType.PORT) {
 				if (move.getPortType() == PortType.RANDOM) {
@@ -324,7 +331,7 @@ public class Table {
 			
 		} else {
 			//trade between players
-			Person receivingPlayer = move.getTradePartner();
+			Player receivingPlayer = move.getTradePartner();
 			receivingPlayer.addResourceCards(performingPlayer.removeResourceCards(move.getGivingCards()));
 			performingPlayer.addResourceCards(receivingPlayer.removeResourceCards(move.getReceivingCards()));
 		}
@@ -356,6 +363,7 @@ public class Table {
 		}
 	}
 	
-	
-	
+	private int rollDice() {
+		return ThreadLocalRandom.current().nextInt(1, 13);
+	}	
 }

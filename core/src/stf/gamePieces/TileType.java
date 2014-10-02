@@ -10,8 +10,6 @@ public enum TileType {
 	MOUNTAINS ("mountains.gif"), 
 	PASTURE ("pasture.gif");
 	
-	
-	
 	Texture image;
 	
 	private TileType(String filePath) {	

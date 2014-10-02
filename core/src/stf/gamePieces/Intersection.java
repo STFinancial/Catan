@@ -17,7 +17,7 @@ public class Intersection {
 	PortType port;
 	Vector3 coords;
 	Sprite sprite;
-	Building building = null;
+	Placeable building = null;
 	
 	Intersection(int ID) {
 		this.ID = ID;
@@ -26,7 +26,7 @@ public class Intersection {
 		exitingPaths = new ArrayList<Path>(3);
 	}
 	
-	public void build(Building building) {
+	public void build(Placeable building) {
 		this.building = building;
 		building.setPosition(this);
 	}
@@ -35,7 +35,7 @@ public class Intersection {
 		return adjacentTiles;
 	}
 	
-	public Building getBuilding() {
+	public Placeable getBuilding() {
 		return building;
 	}
 	

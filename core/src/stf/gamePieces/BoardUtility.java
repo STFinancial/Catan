@@ -5,7 +5,6 @@ import java.util.Random;
 
 public class BoardUtility {
 	
-	
 	public static <T> T[] arrayShuffle(T[] array) {
 		Random r = new Random();
 		int len = array.length;
@@ -27,10 +26,10 @@ public class BoardUtility {
 		Path path = road.getPosition();
 		int pathID = path.getID();
 		ArrayList<Intersection> spanningIntersections = path.getSpanningIntersections();
-		PlayerColor color = road.getOwnerColor();
+		PlayerColor color = road.getColor();
 		
 		Intersection tempInt;
-		Building tempBuilding;
+		Placeable tempBuilding;
 		ArrayList<Path> exitingPaths;
 		Path tempPath;
 		boolean hasConnectors;
@@ -48,7 +47,7 @@ public class BoardUtility {
 					if (tempPath.getID() != pathID) {
 						tempRoad = tempPath.getRoad();
 						if (tempRoad != null) {
-							hasConnectors = hasConnectors || tempRoad.getOwnerColor() == color;
+							hasConnectors = hasConnectors || tempRoad.getColor() == color;
 						}
 					}
 				}
@@ -91,7 +90,7 @@ public class BoardUtility {
 		Path path = road.getPosition();
 		int pathID = path.getID();
 		ArrayList<Intersection> spanningIntersections = path.getSpanningIntersections();
-		PlayerColor color = road.getOwnerColor();
+		PlayerColor color = road.getColor();
 		
 		//conditions for endpoint
 			//either:
@@ -99,7 +98,7 @@ public class BoardUtility {
 				//all exiting paths of one or more of the spanning intersections do not contain roads of the same player
 		
 		Intersection tempInt;
-		Building tempBuilding;
+		Placeable tempBuilding;
 		ArrayList<Path> exitingPaths;
 		Path tempPath;
 		boolean hasConnectors;
@@ -117,7 +116,7 @@ public class BoardUtility {
 					if (tempPath.getID() != pathID) {
 						tempRoad = tempPath.getRoad();
 						if (tempRoad != null) {
-							hasConnectors = hasConnectors || tempRoad.getOwnerColor() == color;
+							hasConnectors = hasConnectors || tempRoad.getColor() == color;
 						}
 					}
 				}

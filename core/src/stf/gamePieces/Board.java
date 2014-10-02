@@ -1,6 +1,5 @@
 package stf.gamePieces;
 
-
 public class Board {
 	Intersection[] intersections;
 	Path[] paths;
@@ -50,8 +49,4 @@ public class Board {
 	public Port[] getPorts() {
 		return ports;
 	}
-	
-	
-	
-	
 }

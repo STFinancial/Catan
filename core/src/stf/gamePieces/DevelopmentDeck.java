@@ -1,10 +1,13 @@
 package stf.gamePieces;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Stack;
 
 public class DevelopmentDeck {
-	private Stack<DevelopmentCard> deck;
+	private Stack<DevelopmentCard> deck = new Stack<DevelopmentCard>();
 	
 	public DevelopmentCard dealCard() {
 		if (deck.isEmpty()) {
@@ -18,57 +21,30 @@ public class DevelopmentDeck {
 		return deck.isEmpty();
 	}
 	
+	public List<DevelopmentCard> addCard(DevelopmentType type, int amount) {
+		List<DevelopmentCard> temp = new ArrayList<DevelopmentCard>();
+		for (int i = 0; i < amount; i++) {
+			temp.add(new DevelopmentCard(type));
+		}
+		return temp;
+	}
 	
 	public DevelopmentDeck() {
-		deck = new Stack<DevelopmentCard>();
+		ArrayList<DevelopmentCard> temp = new ArrayList<DevelopmentCard>();
 		
-		DevelopmentCard[] temp = new DevelopmentCard[25];
+		temp.addAll(addCard(DevelopmentType.KNIGHT, 14));
+		temp.addAll(addCard(DevelopmentType.CHAPEL, 1));
+		temp.addAll(addCard(DevelopmentType.LIBRARY, 1));
+		temp.addAll(addCard(DevelopmentType.MARKET, 1));
+		temp.addAll(addCard(DevelopmentType.UNIVERSITY, 1));
+		temp.addAll(addCard(DevelopmentType.PALACE, 1));
+		temp.addAll(addCard(DevelopmentType.ROADBUILDING, 2));
+		temp.addAll(addCard(DevelopmentType.MONOPOLY, 2));
+		temp.addAll(addCard(DevelopmentType.YEAROFPLENTY, 2));
 		
-		DevelopmentCard newDevelopmentCard;
-		
-		for (int i = 0; i < 14; i++) {
-			newDevelopmentCard = new DevelopmentCard();
-			newDevelopmentCard.type = DevelopmentType.KNIGHT;
-			temp[i] = newDevelopmentCard;
-		}
-		
-		newDevelopmentCard = new DevelopmentCard();
-		newDevelopmentCard.type = DevelopmentType.CHAPEL;
-		temp[14] = newDevelopmentCard;
-		newDevelopmentCard = new DevelopmentCard();
-		newDevelopmentCard.type = DevelopmentType.LIBRARY;
-		temp[15] = newDevelopmentCard;
-		newDevelopmentCard = new DevelopmentCard();
-		newDevelopmentCard.type = DevelopmentType.MARKET;
-		temp[16] = newDevelopmentCard;
-		newDevelopmentCard = new DevelopmentCard();
-		newDevelopmentCard.type = DevelopmentType.UNIVERSITY;
-		temp[17] = newDevelopmentCard;
-		newDevelopmentCard = new DevelopmentCard();
-		newDevelopmentCard.type = DevelopmentType.PALACE;
-		temp[18] = newDevelopmentCard;
-		newDevelopmentCard = new DevelopmentCard();
-		newDevelopmentCard.type = DevelopmentType.ROADBUILDING;
-		temp[19] = newDevelopmentCard;
-		newDevelopmentCard = new DevelopmentCard();
-		newDevelopmentCard.type = DevelopmentType.ROADBUILDING;
-		temp[20] = newDevelopmentCard;
-		newDevelopmentCard = new DevelopmentCard();
-		newDevelopmentCard.type = DevelopmentType.MONOPOLY;
-		temp[21] = newDevelopmentCard;
-		newDevelopmentCard = new DevelopmentCard();
-		newDevelopmentCard.type = DevelopmentType.MONOPOLY;
-		temp[22] = newDevelopmentCard;
-		newDevelopmentCard = new DevelopmentCard();
-		newDevelopmentCard.type = DevelopmentType.YEAROFPLENTY;
-		temp[23] = newDevelopmentCard;
-		newDevelopmentCard = new DevelopmentCard();
-		newDevelopmentCard.type = DevelopmentType.YEAROFPLENTY;
-		temp[24] = newDevelopmentCard;
-		
-		temp = BoardUtility.arrayShuffle(temp);
-		for (int i = 0; i < 25; i++){
-			deck.push(temp[i]);
+		Collections.shuffle(temp);
+		for (DevelopmentCard card : temp) {
+			deck.push(card);
 		}
 	}
 }
